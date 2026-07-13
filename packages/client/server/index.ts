@@ -4,12 +4,14 @@ dotenv.config()
 import { HelmetServerState } from 'react-helmet-async'
 import express, { Request as ExpressRequest } from 'express'
 import path from 'path'
+import { fileURLToPath } from 'url'
 
 import fs from 'fs/promises'
 import { createServer as createViteServer, ViteDevServer } from 'vite'
 import serialize from 'serialize-javascript'
 import cookieParser from 'cookie-parser'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const port = process.env.PORT || 80
 const clientPath = path.join(__dirname, '..')
 const isDev = process.env.NODE_ENV === 'development'
@@ -39,9 +41,7 @@ async function createServer() {
     try {
       // Получаем файл client/index.html который мы правили ранее
       // Создаём переменные
-      let render: (
-        req: ExpressRequest
-      ) => Promise<{
+      let render: (req: ExpressRequest) => Promise<{
         html: string
         initialState: unknown
         helmet: HelmetServerState
@@ -73,7 +73,7 @@ async function createServer() {
         // Получаем путь до сбилдженого модуля клиента, чтобы не тащить средства сборки клиента на сервер
         const pathToServer = path.join(
           clientPath,
-          'dist/server/entry-server.js'
+          'dist/server/entry-server.mjs'
         )
 
         // Импортируем этот модуль и вызываем с инишл стейтом

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "composite": true,
     "target": "es2019",
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

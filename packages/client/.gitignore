@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Compiled output of tsconfig.server.json (rebuilt by dev/build/preview)
+server/index.js
+server/index.d.ts
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
