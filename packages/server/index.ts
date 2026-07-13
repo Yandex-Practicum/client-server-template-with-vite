@@ -20,6 +20,9 @@ app.get('/friends', (_, res) => {
 })
 
 app.get('/user', (_, res) => {
+  // Имя намеренно содержит "</script>" — проверка, что React (при рендере в DOM)
+  // и serialize-javascript (при сериализации в window.APP_INITIAL_STATE) экранируют
+  // значение и не дают преждевременно закрыть тег <script> на SSR-странице
   res.json({ name: '</script>Степа', secondName: 'Степанов' })
 })
 

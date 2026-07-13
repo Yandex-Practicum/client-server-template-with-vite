@@ -18,6 +18,7 @@ export default defineConfig({
   },
   ssr: {
     format: 'cjs',
+    noExternal: ['styled-components'],
   },
   plugins: [react()],
 })

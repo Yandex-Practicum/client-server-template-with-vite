@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-import { HelmetData } from 'react-helmet'
+import { HelmetServerState } from 'react-helmet-async'
 import express, { Request as ExpressRequest } from 'express'
 import path from 'path'
 
@@ -33,7 +33,7 @@ async function createServer() {
     )
   }
 
-  app.get('*', async (req, res, next) => {
+  app.get('/{*splat}', async (req, res, next) => {
     const url = req.originalUrl
 
     try {
@@ -41,7 +41,12 @@ async function createServer() {
       // Создаём переменные
       let render: (
         req: ExpressRequest
-      ) => Promise<{ html: string; initialState: unknown; helmet: HelmetData; styleTags: string }>
+      ) => Promise<{
+        html: string
+        initialState: unknown
+        helmet: HelmetServerState
+        styleTags: string
+      }>
       let template: string
       if (vite) {
         template = await fs.readFile(
@@ -76,12 +81,20 @@ async function createServer() {
       }
 
       // Получаем HTML-строку из JSX
-      const { html: appHtml, initialState, helmet, styleTags } = await render(req)
+      const {
+        html: appHtml,
+        initialState,
+        helmet,
+        styleTags,
+      } = await render(req)
 
       // Заменяем комментарий на сгенерированную HTML-строку
       const html = template
         .replace('<!--ssr-styles-->', styleTags)
-        .replace(`<!--ssr-helmet-->`, `${helmet.meta.toString()} ${helmet.title.toString()} ${helmet.link.toString()}`)
+        .replace(
+          `<!--ssr-helmet-->`,
+          `${helmet.meta.toString()} ${helmet.title.toString()} ${helmet.link.toString()}`
+        )
         .replace(`<!--ssr-outlet-->`, appHtml)
         .replace(
           `<!--ssr-initial-state-->`,
