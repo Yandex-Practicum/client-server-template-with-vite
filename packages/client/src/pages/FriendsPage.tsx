@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 import { useSelector } from '../store'
 import { Header } from '../components/Header'
@@ -22,7 +22,10 @@ export const FriendsPage = () => {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Список друзей</title>
-        <meta name="description" content="Страница со списком друзей и с информацией о пользователе"/>
+        <meta
+          name="description"
+          content="Страница со списком друзей и с информацией о пользователе"
+        />
       </Helmet>
       <Header />
       {user ? (
