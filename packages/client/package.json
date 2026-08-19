@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "tsc --project tsconfig.server.json && cross-env NODE_ENV=development PORT=3000 EXTERNAL_SERVER_URL='http://localhost:3001' INTERNAL_SERVER_URL='http://localhost:3001' node server/index.js",
-    "build": "tsc --project tsconfig.server.json && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "build": "tsc --project tsconfig.server.json && vite build",
     "preview": "node server/index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.0",
-    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.2",
     "eslint-config-prettier": "^8.5.0",
     "express": "^5.2.1",
@@ -22,7 +21,6 @@
     "react-redux": "^9.0.0",
     "react-router-dom": "^6.16.0",
     "redux": "^5.0.1",
-    "serialize-javascript": "^6.0.1",
     "styled-components": "^6.1.0",
     "vite": "^8.1.4"
   },
