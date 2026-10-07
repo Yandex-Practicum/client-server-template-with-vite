@@ -1,4 +1,4 @@
-name: Lint
+name: Checks
 
 on:
   pull_request:
@@ -7,18 +7,27 @@ on:
       - main
       - dev
 
+permissions:
+  contents: read
+
 jobs:
-  eslint:
+  checks:
     runs-on: ubuntu-latest
+    # Сторонние actions запрещены политикой организации, поэтому обходимся без них
+    container: node:22
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - name: Install main deps
-        run: yarn
-      - name: Initialize
-        run: yarn lerna bootstrap
+      - name: Checkout
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          # Рабочая папка в контейнере принадлежит другому пользователю
+          git config --global --add safe.directory "$PWD"
+          git init -q .
+          git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git fetch -q --depth 1 origin "${GITHUB_SHA}"
+          git checkout -q FETCH_HEAD
+      - name: Install deps
+        run: yarn --frozen-lockfile
       - name: Lint
         run: yarn lint
       - name: Test
