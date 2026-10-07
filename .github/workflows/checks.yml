@@ -20,6 +20,8 @@ jobs:
         env:
           TOKEN: ${{ github.token }}
         run: |
+          # Рабочая папка в контейнере принадлежит другому пользователю
+          git config --global --add safe.directory "$PWD"
           git init -q .
           git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git fetch -q --depth 1 origin "${GITHUB_SHA}"
